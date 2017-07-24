@@ -1,0 +1,22 @@
+<html>
+<head>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <h1>Time is running out!</h1>
+  <div id="active-rule">
+    <div id="active-time"></div>
+    <div id="active-note"></div>
+  </div>
+  <h2>All Rules</h2>
+  <ul id="rules">
+  </ul>
+  <form id="new-rule-form">
+    <input required id="pattern" type="text" placeholder="twitter.com" />
+    <input required id="time" type="number" min="0" placeholder="Minutes" />
+    <br />
+    <button id="submit" type="submit">Add new rule</button>
+  </form>
+  <script src="popup.js"></script>
+</body>
+</html>

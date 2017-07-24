@@ -1,0 +1,38 @@
+{
+  "manifest_version": 2,
+  "name": "Time is Running Out",
+  "version": "1.0",
+
+  "description": "Set limits on the amount of time you can spend on websites.",
+
+  "icons": {
+    "32": "icon.svg"
+  },
+
+  "browser_action": {
+    "browser_style": true,
+    "default_icon": {
+      "16": "icon.svg",
+      "32": "icon.svg" 
+    },
+    "default_title": "What",
+    "default_popup": "popup.html"
+  },
+
+  "permissions": [
+    "tabs",
+    "notifications",
+    "storage"
+  ],
+
+  "applications": {
+    "gecko": {
+      "id": "time-running-out-context-fill-hack@mozilla.org",
+      "strict_min_version": "42.0"
+    }
+  },
+
+  "background": {
+    "scripts": ["background.js"]
+  }
+}
