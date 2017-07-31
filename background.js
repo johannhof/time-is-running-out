@@ -1,7 +1,8 @@
-browser.storage.local.get("sites").then(init);
+browser.storage.local.get().then(init);
 
-function init({sites}) {
+function init({sites, lastReset}) {
   window.sites = sites || [];
+  lastReset = lastReset || 0;
 
   window.addSite = function(pattern, time) {
     window.sites.push({
@@ -106,11 +107,21 @@ function init({sites}) {
 
   setInterval(tick, 1000);
 
-  // Periodically store the current state.
+  // Periodically update and store the current state.
   async function saveRules() {
+    // Check whether more than 24h passed since the last reset.
+    if (Date.now() - lastReset > 24 * 60 * 60 * 1000) {
+      lastReset = Date.now();
+      for (let site of window.sites) {
+        site.currentTime = site.time;
+      }
+    }
+
     await browser.storage.local.set({
       sites: window.sites,
+      lastReset,
     });
+
     window.requestIdleCallback(saveRules, {timeout: 15000});
   }
 

@@ -53,18 +53,27 @@ h2 {
   padding: 0;
   max-height: 280px;
   overflow: scroll;
-  margin-bottom: 48px;
+  margin-bottom: 24px;
 }
 
 #rules > li {
-  border-bottom: 1px solid var(--grey-30);
   padding: 8px 12px;
   display: flex;
   align-content: center;
   justify-content: space-between;
 }
 
+#rules > li:hover {
+  background-color: var(--grey-30);
+}
+
 #rules > li:last-of-type {
+  border-bottom: 1px solid var(--grey-30);
+}
+
+.pattern {
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .time {
@@ -78,6 +87,7 @@ h2 {
 #pattern {
   font-size: 13px;
   width: 60%;
+  text-overflow: ellipsis;
 }
 
 #time {
