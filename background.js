@@ -6,11 +6,16 @@ function init({sites, lastReset}) {
 
   window.addSite = function(pattern, time) {
     window.sites.push({
+      id: performance.now(),
       pattern,
       time,
       currentTime: time,
       active: false,
     });
+  }
+
+  window.removeSite = function(id) {
+    window.sites = window.sites.filter(site => site.id != id);
   }
 
   let previousActive = null;
@@ -52,7 +57,7 @@ function init({sites, lastReset}) {
 
     if (rule.currentTime < 60) {
       browser.browserAction.setBadgeText({
-        text: rule.currentTime.toString(),
+        text: Math.max(rule.currentTime, 0).toString(),
       });
       browser.browserAction.setBadgeBackgroundColor({color: "#ff0039"});
     } else {
@@ -103,6 +108,8 @@ function init({sites, lastReset}) {
         "message": `Closed the tab because the time for ${rule.pattern} has run out.`,
       });
     }
+
+    return;
   };
 
   setInterval(tick, 1000);
@@ -111,7 +118,9 @@ function init({sites, lastReset}) {
   async function saveRules() {
     // Check whether more than 24h passed since the last reset.
     if (Date.now() - lastReset > 24 * 60 * 60 * 1000) {
-      lastReset = Date.now();
+      lastReset = new Date();
+      // Reset on midnight.
+      lastReset.setHours(0, 0, 0, 0);
       for (let site of window.sites) {
         site.currentTime = site.time;
       }
@@ -121,9 +130,7 @@ function init({sites, lastReset}) {
       sites: window.sites,
       lastReset,
     });
-
-    window.requestIdleCallback(saveRules, {timeout: 15000});
   }
 
-  window.requestIdleCallback(saveRules, {timeout: 15000});
+  setInterval(saveRules, 15000);
 }

@@ -4,19 +4,40 @@
 </head>
 <body>
   <h1>Time is running out!</h1>
-  <div id="active-rule">
-    <div id="active-time"></div>
-    <div id="active-note"></div>
+  <div id="app">
+    <div v-if="activeSite" v-bind:style="activeStyle" id="active-rule">
+      <div id="active-time">
+        {{ activeSite.currentTime | formatTime }}
+      </div>
+      <div id="active-note">
+        Remaining for {{ activeSite.pattern }} today.
+      </div>
+    </div>
+    <h2>All Rules</h2>
+    <ul id="rules">
+      <li v-for="site in sites">
+        <div v-if="removeView == site.id" class="removal-container">
+          <button @click="removeSite(site.id)">Remove</button>
+          <button @click="toggleRemoveView(site.id)">Cancel</button>
+        </div>
+        <div v-else @click.alt="toggleRemoveView(site.id)">
+          <span class="pattern">
+            {{ site.pattern }}
+          </span>
+          <span class="time">
+            {{ site.currentTime | formatTime }} / {{ site.time | formatTime }}
+          </span>
+        </div>
+      </li>
+    </ul>
+    <form @submit="addSite()" id="new-rule-form">
+      <input required id="pattern" v-model="pattern" type="text" placeholder="twitter.com" />
+      <input required id="time" v-model="time" type="number" min="0" placeholder="Minutes" />
+      <br />
+      <button id="submit" type="submit">Add new rule</button>
+    </form>
   </div>
-  <h2>All Rules</h2>
-  <ul id="rules">
-  </ul>
-  <form id="new-rule-form">
-    <input required id="pattern" type="text" placeholder="twitter.com" />
-    <input required id="time" type="number" min="0" placeholder="Minutes" />
-    <br />
-    <button id="submit" type="submit">Add new rule</button>
-  </form>
+  <script src="vue.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>
